@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MovieDB</string>
+    <string name="api_key">2820623128807bc4ac8b27108be06ed5</string>
+    <string name="movie_poster">movie Poster</string>
+    <string name="movie_user_rating">%1$s/10</string>
+    <string name="movie_runtime">%1$s min</string>
+    <string name="sort_by_popular">Most Popular</string>
+    <string name="sort_by_top_rated">Top Rated</string>
+    <string name="detail_movie_poster">Movie Poster</string>
+    <string name="no_internet">Please connect to internet/data</string>
+</resources>
