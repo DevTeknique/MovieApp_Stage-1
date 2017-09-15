@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.devteknique.moviedb.Utilities.MovieJsonUtils;
 import com.devteknique.moviedb.Utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
+
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
 import butterknife.BindView;
@@ -28,6 +29,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     @BindView(R.id.cl_movie_detail) ConstraintLayout detailLayout;
     @BindView(R.id.pb_loading_circle) ProgressBar mLoadingIndicator;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,15 +37,33 @@ public class MovieDetailActivity extends AppCompatActivity {
         //Bind Views
         ButterKnife.bind(this);
 
+
+
         //Get information from Intent
         Intent intent = getIntent();
         movieID=intent.getStringExtra("MOVIE_ID");
 
-        //Execute AsyncTask to get Movie Details and Display Info
+        //Execute AsyncTask to get Movie Details
         new FetchMovieDetails().execute(movieID);
     }
 
-    //TODO: Create Async Task for Movie Details.
+
+    public void showDetails (){
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
+        detailLayout.setVisibility(View.VISIBLE);
+    }
+
+
+    public void populateMovieDetails (ConcurrentHashMap hashMap){
+        movieTitle.setText(hashMap.get("original_title").toString());
+        movieYearReleased.setText(hashMap.get("release_date").toString());
+        movieRuntime.setText(getString(R.string.movie_runtime,hashMap.get("runtime").toString()));
+        movieUserRating.setText(getString(R.string.movie_user_rating,hashMap.get("vote_average").toString()));
+        movieOverView.setText(hashMap.get("overview").toString());
+        Picasso.with(this).load(NetworkUtils.BASE_POSTER_URL+hashMap.get("poster_path")).into(moviePoster);
+        showDetails();
+    }
+
     private class FetchMovieDetails extends AsyncTask<String,Void,ConcurrentHashMap> {
         ConcurrentHashMap hashMap = new ConcurrentHashMap();
 
@@ -70,18 +90,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(ConcurrentHashMap hashMap) {
-            movieTitle.setText(hashMap.get("original_title").toString());
-            movieYearReleased.setText(hashMap.get("release_date").toString());
-            movieRuntime.setText(getString(R.string.movie_runtime,hashMap.get("runtime").toString()));
-            movieUserRating.setText(getString(R.string.movie_user_rating,hashMap.get("vote_average").toString()));
-            movieOverView.setText(hashMap.get("overview").toString());
-            Picasso.with(MovieDetailActivity.this).load(NetworkUtils.BASE_POSTER_URL+ this.hashMap.get("poster_path")).into(moviePoster);
-            showDetails();
+            populateMovieDetails(hashMap);
         }
-    }
-
-    public void showDetails (){
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
-        detailLayout.setVisibility(View.VISIBLE);
     }
 }

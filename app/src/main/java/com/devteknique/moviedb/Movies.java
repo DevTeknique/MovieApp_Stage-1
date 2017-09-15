@@ -19,6 +19,7 @@ public class Movies extends AppCompatActivity implements MovieAdapter.MovieAdapt
     public static Object context;
     RecyclerView moviePosters;
     public static MovieAdapter mMovieAdapter;
+    BackgroundTasks backgroundTasks;
 
 
 
@@ -35,7 +36,8 @@ public class Movies extends AppCompatActivity implements MovieAdapter.MovieAdapt
         moviePosters.setLayoutManager(gridLayoutManager);
         mMovieAdapter = new MovieAdapter(this);
         moviePosters.setAdapter(mMovieAdapter);
-        new BackgroundTasks("popular");
+        backgroundTasks = new BackgroundTasks();
+        backgroundTasks.getMoviePosters("popular");
 
     }
 
@@ -58,11 +60,11 @@ public class Movies extends AppCompatActivity implements MovieAdapter.MovieAdapt
         int id = item.getItemId();
 
         if (id == R.id.action_sort_by_popular) {
-            new BackgroundTasks("popular");
+            backgroundTasks.getMoviePosters("popular");
             return true;
         }
         if  (id == R.id.action_sort_by_top_rated) {
-            new BackgroundTasks("top_rated");
+            backgroundTasks.getMoviePosters("top_rated");
             return true;
         }
         return super.onOptionsItemSelected(item);

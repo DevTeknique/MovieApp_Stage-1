@@ -5,17 +5,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
 import com.devteknique.moviedb.Movies;
 import com.devteknique.moviedb.R;
-
 import java.net.URL;
-
-
-
 public class BackgroundTasks {
 
-    public BackgroundTasks (String sortType){
+      public void getMoviePosters (String sortType){
         new FetchThumbnails().execute(sortType);
     }
     //Class to retrieve movie poster thumbnails for RecyclerView
